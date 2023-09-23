@@ -1,9 +1,8 @@
 [package]
-name = "TrollCase"
+name = "troll_case"
 version = "0.2.0"
 edition = "2021"
 
 [dependencies]
 rand = "0.8.5"
-gtk = "0.18.1"
-glib = "0.18.2"
+fltk = "1"

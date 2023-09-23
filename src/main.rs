@@ -1,61 +1,36 @@
-extern crate gtk;
-use gtk::{prelude::*};
-
-mod casing;
+use fltk::{app, button::Button, input::Input, prelude::*, window::Window};
+mod casing; // Make sure your casing mod is present
 
 fn main() {
-    gtk::init().expect("Failed to initialize GTK.");
+    let app = app::App::default().with_scheme(app::Scheme::Gtk);
 
     // Window properties
-    let window = gtk::Window::new(gtk::WindowType::Toplevel);
-    window.set_title("TrollCase");
-    window.set_position(gtk::WindowPosition::Center);
+    let window = Window::new(100, 100, 400, 300, "TrollCase");
 
-    let context = gtk::StyleContext::new();
-    context.add_class("system-font");
-
-    let grid = gtk::Grid::new();
-    let label = gtk::Label::new(Some("Enter text:"));
-    let entry = gtk::Entry::new();
+    // Setup text input
+    let mut input = Input::new(160, 50, 180, 25, "Enter text:");
 
     // Setup buttons
-
-    let btn_randomize = gtk::Button::with_label("Randomize");
-    let btn_alternate = gtk::Button::with_label("Alternate");
-
-    btn_alternate.set_halign(gtk::Align::End);
-    grid.attach(&label, 0, 0, 1, 1);
-    grid.attach(&entry, 1, 0, 2, 1);
-    grid.attach(&btn_randomize, 0, 1, 1, 1);
-    grid.attach(&btn_alternate, 2, 1, 1, 1);
-
-    window.add(&grid);
+    let mut btn_randomize = Button::new(50, 100, 80, 40, "Randomize");
+    let mut btn_alternate = Button::new(270, 100, 80, 40, "Alternate");
 
     // Functionality
-
-    fn connect_button_with_caser<F>(button: &gtk::Button, entry: &gtk::Entry, caser: F)
+    fn connect_button_with_caser<F>(button: &mut Button, input: &mut Input, caser: F)
     where
-        F: Fn(&mut String) -> String + 'static,
+        F: Fn(&mut String) -> String + 'static + Copy,
     {
-        button.connect_clicked(glib::clone!(@weak entry => move |_| {
-            let mut text = entry.text().to_string();
+        let mut input = input.clone(); // Clone the input
+        button.set_callback(move |_| {
+            let mut text = input.value();
             let result = caser(&mut text);
-            entry.set_text(&result);
-        }));
+            input.set_value(&result);
+        });
     }
 
-    connect_button_with_caser(&btn_randomize, &entry, casing::randomize);
-    connect_button_with_caser(&btn_alternate, &entry, casing::alternate);
 
-    // Window management
+    connect_button_with_caser(&mut btn_randomize, &mut input, casing::randomize);
+    connect_button_with_caser(&mut btn_alternate, &mut input, casing::alternate);
 
-    window.show_all();
-    window.present();
-
-    window.connect_delete_event(|_, _| {
-        gtk::main_quit();
-        glib::Propagation::Stop
-    });
-
-    gtk::main();
+    window.center_screen().show();
+    app.run().unwrap();
 }
