@@ -3,14 +3,6 @@
 version = 3
 
 [[package]]
-name = "TrollCase"
-version = "0.2.0"
-dependencies = [
- "fltk",
- "rand",
-]
-
-[[package]]
 name = "bitflags"
 version = "2.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -138,6 +130,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 dependencies = [
  "getrandom",
+]
+
+[[package]]
+name = "troll_case"
+version = "0.2.0"
+dependencies = [
+ "fltk",
+ "rand",
 ]
 
 [[package]]
