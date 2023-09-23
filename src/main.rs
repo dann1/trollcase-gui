@@ -1,33 +1,33 @@
 extern crate gtk;
-use glib::Propagation;
-use gtk::{prelude::*, Button, Entry, Grid, Label, Window, WindowType};
+use gtk::{prelude::*};
 
 mod casing;
 
 fn main() {
     gtk::init().expect("Failed to initialize GTK.");
 
-    // Create window properties
-    let window = Window::new(WindowType::Toplevel);
-
+    // Window properties
+    let window = gtk::Window::new(gtk::WindowType::Toplevel);
     window.set_title("TrollCase");
     window.set_position(gtk::WindowPosition::Center);
-    let grid = Grid::new();
-    let label = Label::new(Some("Enter text:"));
-    let entry = Entry::new();
+
+    let context = gtk::StyleContext::new();
+    context.add_class("system-font");
+
+    let grid = gtk::Grid::new();
+    let label = gtk::Label::new(Some("Enter text:"));
+    let entry = gtk::Entry::new();
 
     // Setup buttons
 
-    let mut btn_name = "Randomize".to_string();
-    casing::randomize(&mut btn_name);
+    let btn_randomize = gtk::Button::with_label("Randomize");
+    let btn_alternate = gtk::Button::with_label("Alternate");
 
-    let btn_randomize = Button::with_label(&btn_name);
-    let btn_alternate = Button::with_label("AlTeRnAtE");
-
+    btn_alternate.set_halign(gtk::Align::End);
     grid.attach(&label, 0, 0, 1, 1);
     grid.attach(&entry, 1, 0, 2, 1);
     grid.attach(&btn_randomize, 0, 1, 1, 1);
-    grid.attach(&btn_alternate, 1, 1, 1, 1);
+    grid.attach(&btn_alternate, 2, 1, 1, 1);
 
     window.add(&grid);
 
@@ -47,12 +47,14 @@ fn main() {
     connect_button_with_caser(&btn_randomize, &entry, casing::randomize);
     connect_button_with_caser(&btn_alternate, &entry, casing::alternate);
 
+    // Window management
+
     window.show_all();
     window.present();
 
     window.connect_delete_event(|_, _| {
         gtk::main_quit();
-        Propagation::Stop
+        glib::Propagation::Stop
     });
 
     gtk::main();
