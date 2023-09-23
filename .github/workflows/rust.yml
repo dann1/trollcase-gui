@@ -26,7 +26,6 @@ jobs:
         profile: minimal
         toolchain: stable
 
-    # Install dependencies on Ubuntu
     - name: Install Dependencies (Ubuntu)
       if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get update && sudo apt-get install -y libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev libpango1.0-dev libpangoxft-1.0-0
@@ -37,9 +36,17 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
 
-    - name: Upload Artifacts
+    - name: Upload Artifacts UNIX
+      if: matrix.os != 'windows-latest'
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.os }}-artifact
         path: |
           target/release/troll_case
+    - name: Upload Artifacts UNIX
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}-artifact
+        path: |
+          target/release/troll_case.exe
