@@ -3,6 +3,15 @@
 version = 3
 
 [[package]]
+name = "TrollCase"
+version = "0.2.0"
+dependencies = [
+ "glib",
+ "gtk",
+ "rand",
+]
+
+[[package]]
 name = "atk"
 version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -699,15 +708,6 @@ dependencies = [
  "serde_spanned",
  "toml_datetime",
  "winnow",
-]
-
-[[package]]
-name = "trollcase-gui"
-version = "0.2.0"
-dependencies = [
- "glib",
- "gtk",
- "rand",
 ]
 
 [[package]]
