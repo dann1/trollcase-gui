@@ -29,7 +29,7 @@ jobs:
     # Install dependencies on Ubuntu
     - name: Install Dependencies (Ubuntu)
       if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get update && sudo apt-get install -y libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev
+      run: sudo apt-get update && sudo apt-get install -y libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev libpango1.0-dev libpangoxft-1.0-0
 
     - name: Build
       run: cargo build --release --verbose
