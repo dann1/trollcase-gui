@@ -19,16 +19,24 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Setup Rust
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+
+    # Install dependencies on Ubuntu
+    - name: Install Dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get update && sudo apt-get install -y libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev
+
     - name: Build
       run: cargo build --release --verbose
+
     - name: Run tests
       run: cargo test --verbose
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:

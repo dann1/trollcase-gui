@@ -1,5 +1,7 @@
 # TrollCase
 
+[![Rust](https://github.com/dann1/trollcase-gui/actions/workflows/rust.yml/badge.svg)](https://github.com/dann1/trollcase-gui/actions/workflows/rust.yml)
+
 FLTK GUI application to alter the casing of a given text.
 
 <img width="404" alt="Screenshot 2023-09-23 at 12 15 41 a m" src="https://github.com/dann1/trollcase-gui/assets/16429804/d1da9a8f-ea22-4927-875b-91698bfe6189">
