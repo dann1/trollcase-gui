@@ -4,8 +4,16 @@ pub fn randomize(text: &str) -> String {
     let mut rng = rand::thread_rng();
     text.chars()
         .map(|c| {
-            if rng.gen_bool(0.5) {
-                c.to_ascii_uppercase()
+            if !c.is_alphabetic() || !c.is_ascii() {
+                c
+            } else if rng.gen_bool(0.5) {
+                if c.is_ascii_uppercase() {
+                    c
+                } else {
+                    c.to_ascii_uppercase()
+                }
+            } else if c.is_ascii_lowercase() {
+                c
             } else {
                 c.to_ascii_lowercase()
             }
@@ -17,10 +25,16 @@ pub fn alternate(text: &str) -> String {
     text.chars()
         .enumerate()
         .map(|(i, c)| {
-            if i == 0 || !c.is_ascii_alphabetic() {
+            if !c.is_alphabetic() || !c.is_ascii() {
                 c
-            } else if text.chars().nth(i - 1).unwrap().is_ascii_lowercase() {
-                c.to_ascii_uppercase()
+            } else if i % 2 == 0 {
+                if c.is_ascii_uppercase() {
+                    c
+                } else {
+                    c.to_ascii_uppercase()
+                }
+            } else if c.is_ascii_lowercase() {
+                c
             } else {
                 c.to_ascii_lowercase()
             }
