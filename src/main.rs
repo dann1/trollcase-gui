@@ -1,14 +1,14 @@
 use fltk::{app, button::Button, input::Input, prelude::*, window::Window};
-mod casing; // Make sure your casing mod is present
+mod casing;
 
 fn main() {
     let app = app::App::default().with_scheme(app::Scheme::Gtk);
 
     // Window properties
-    let window = Window::new(100, 100, 400, 300, "TrollCase");
+    let window = Window::new(100, 100, 400, 150, "TrollCase");
 
     // Setup text input
-    let mut input = Input::new(160, 50, 180, 25, "Enter text:");
+    let mut input = Input::new(60, 20, 270, 25, "");
 
     // Setup buttons
     let mut btn_randomize = Button::new(50, 100, 80, 40, "Randomize");
@@ -17,19 +17,20 @@ fn main() {
     // Functionality
     fn connect_button_with_caser<F>(button: &mut Button, input: &mut Input, caser: F)
     where
-        F: Fn(&mut String) -> String + 'static + Copy,
+        F: Fn(&str) -> String + 'static,
     {
-        let mut input = input.clone(); // Clone the input
+        let mut input = input.clone();
         button.set_callback(move |_| {
-            let mut text = input.value();
-            let result = caser(&mut text);
+            let text = input.value();
+            let result = caser(&text);
             input.set_value(&result);
         });
     }
 
-
     connect_button_with_caser(&mut btn_randomize, &mut input, casing::randomize);
     connect_button_with_caser(&mut btn_alternate, &mut input, casing::alternate);
+
+    // TODO: Copy to clipboard button
 
     window.center_screen().show();
     app.run().unwrap();
